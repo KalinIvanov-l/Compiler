@@ -7,32 +7,14 @@ public class LEX {
     private static String scanInput = "";
     private static Symbol[] sTable = new Symbol[100];
     public static int i = 0;
-//    private int[] tol = new int[300];
+    //    private int[] tol = new int[300];
     int global = 0;
     private static int[] storage = new int[200];
-    public static void main(String[] args) {
-//        LEX lexical = new LEX();
-//        //String text = "This  gg  ++ 456 dog";
-//
-//        String buff = "";
-//        while (true) {
-//            System.out.println("Write your expression \n");
-//            scanInput = scanner.nextLine();
-//            if (scanInput.equalsIgnoreCase("end")) {
-//                break;
-//            }
-//            buff += scanInput;
-//            System.out.println(buff);
-//            lexical.analyze(buff);
-//        }
-//        print(lexical.sTable);
-//        System.out.println("==============>");
-//        printA(lexical.storage);
 
+    public static void main(String[] args) {
         LEX l = new LEX();
         l.initialize();
         print(l.sTable);
-
     }
 
     void analyze(String input) {
@@ -60,7 +42,7 @@ public class LEX {
                     buff += c;
                     c = getNext(input);
                 }
-                 int token = STable.addToArray(buff, sTable, 2);
+                int token = STable.addToArray(buff, sTable, 2);
 
                 storage[global] = token;
                 global++;

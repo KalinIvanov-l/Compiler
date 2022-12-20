@@ -29,9 +29,11 @@ public class SyntaxAnalyzer {
         SyntaxAnalyzer sa = new SyntaxAnalyzer();
         sa.Z();
     }
+
     public void error(String s) {
         System.out.println("Error needed " + s);
     }
+
     public Symbol getToken() {
         Symbol sm = null;
         if (globalLexOut < lexOut.length) {
@@ -45,7 +47,7 @@ public class SyntaxAnalyzer {
 
     public void Z() {
         start();
-        if (!token.getName().equals("Start")){
+        if (!token.getName().equals("Start")) {
             error("Start");
         }
         token = getToken();
@@ -55,6 +57,7 @@ public class SyntaxAnalyzer {
         }
         token = getToken();
     }
+
     public void start() {
         if (!token.getName().equals("Structure")) {
             error("Structure");
@@ -69,6 +72,7 @@ public class SyntaxAnalyzer {
         }
         token = getToken();
     }
+
     public void block() {
         stm();
         while (token.equals(";")) {
@@ -76,6 +80,7 @@ public class SyntaxAnalyzer {
             stm();
         }
     }
+
     public void stm() {
         if (token.getTypeCode() == 1) {
             token = getToken();
@@ -98,9 +103,10 @@ public class SyntaxAnalyzer {
                 stm();
             }
         } else {
-               error("Aliud");
-           }
+            error("Aliud");
+        }
     }
+
     public void exp() {
         term();
         while (token.getName().equals("+")) {
@@ -108,6 +114,7 @@ public class SyntaxAnalyzer {
             term();
         }
     }
+
     public void term() {
         factor();
         while (token.getName().equals("*")) {
@@ -115,12 +122,13 @@ public class SyntaxAnalyzer {
             factor();
         }
     }
+
     public void factor() {
         if (token.getTypeCode() == 1) {
             token = getToken();
-        } else if(token.getTypeCode() == 2) {
+        } else if (token.getTypeCode() == 2) {
             token = getToken();
-        } else if(token.getName().equals("(")) {
+        } else if (token.getName().equals("(")) {
             token = getToken();
             exp();
             if (!token.getName().equals(")")) {
