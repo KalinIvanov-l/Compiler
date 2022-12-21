@@ -67,7 +67,8 @@ public class LEX {
 
     private boolean isOperator(char c) {
         return (c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^' || c == '.'
-                || c == '=' || c == '<' || c == '>' || c == '$' || c == '(' || c == ')' || c == ';');
+                || c == '=' || c == '<' || c == '>' || c == '$' || c == '(' || c == ')'
+                || c == ';' || c == '{' || c == '}');
     }
 
     public char getNext(String input) {
@@ -105,7 +106,7 @@ public class LEX {
     }
 
     public String initialize() {
-        String[] keyword = {"Start", "Finish", "Structure", "=>", ";", "Si", "Then", "Aliud"}; //има думи на латински
+        String[] keyword = {"Start", "stttop", "Structure", "=>", ";", "Si", "Then", "Aliud", "While", "print", "scan"}; //има думи на латински
         for (String x : keyword) {
             System.out.println(STable.hashCode(x));
             int var = STable.hashCode(x);

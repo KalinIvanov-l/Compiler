@@ -102,10 +102,43 @@ public class SyntaxAnalyzer {
                 token = getToken();
                 stm();
             }
-        } else {
-            error("Aliud");
         }
+        if (token.getName().equals("While")) {
+            token = getToken();
+            if (!token.getName().equals("(")) {
+                error("(");
+            }
+            token = getToken();
+            check();
+            if (!token.getName().equals(")")) {
+                error(")");
+            }
+            token = getToken();
+            if (!token.getName().equals("{")) {
+                error("{");
+            }
+            token = getToken();
+            stm();
+            token = getToken();
+
+            if (!token.getName().equals(")")) {
+                error(")");
+            }
+
+        } else if (token.getName().equals("print")) {
+            token = getToken();
+            out();
+        } else if (token.getName().equals("scan")) {
+            token = getToken();
+            if (!token.getName().equals("Ident")) {
+                error("Ident");
+            }
+            token = getToken();
+        }
+
+        error("##");
     }
+
 
     public void exp() {
         term();
@@ -137,6 +170,23 @@ public class SyntaxAnalyzer {
             token = getToken();
         } else {
             error("error");
+        }
+    }
+
+    public void check() {
+        exp();
+        if (!token.getName().equals("==")) {
+            error("==");
+        }
+        token = getToken();
+        exp();
+    }
+
+    public void out() {
+        exp();
+        while (token.getName().equals(",")) {
+            token = getToken();
+            exp();
         }
     }
 }

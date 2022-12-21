@@ -12,7 +12,7 @@ public class STable {
         }
 
         sum += ((symbolArray[0] + symbolArray[symbolArray.length - 1]) - 1); //obtain large integer
-        return (sum % 3 ^ symbolArray.length); //module type hashing
+        return (sum % 77 ^ symbolArray.length); //module type hashing
     }
 
     public static int addToArray(String symbol, Symbol[] array, int type) {
