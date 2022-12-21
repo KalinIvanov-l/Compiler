@@ -52,10 +52,11 @@ public class SyntaxAnalyzer {
         }
         token = getToken();
         block();
+        token = getToken();
         if (!token.getName().equals("Finish")) {
             error("Finish");
         }
-        token = getToken();
+        //token = getToken();
     }
 
     public void start() {
@@ -133,10 +134,11 @@ public class SyntaxAnalyzer {
             if (!token.getName().equals("Ident")) {
                 error("Ident");
             }
-            token = getToken();
+            //token = getToken();
+        } else {
+            error("##");
         }
 
-        error("##");
     }
 
 
