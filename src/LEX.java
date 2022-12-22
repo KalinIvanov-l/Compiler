@@ -106,7 +106,8 @@ public class LEX {
     }
 
     public String initialize() {
-        String[] keyword = {"Start", "stttop", "Structure", "=>", ";", "Si", "Then", "Aliud", "While", "print", "scan"}; //има думи на латински
+        String[] keyword = {"Start", "stttop", "Structure", "=>", ";", "Si", "Then", "Aliud", "While", "print", "scan",
+                "Finish", "err"}; //има думи на латински
         for (String x : keyword) {
             System.out.println(STable.hashCode(x));
             int var = STable.hashCode(x);

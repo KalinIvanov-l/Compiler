@@ -8,30 +8,34 @@ public class SyntaxAnalyzer {
     Symbol token = getToken();
 
     public static void main(String[] args) {
-        LEX lexical = new LEX();
-        lexical.initialize();
+        try {
+            LEX lexical = new LEX();
+            lexical.initialize();
 
-        String buff = "";
-        while (true) {
-            System.out.println("Write your expression \n");
-            scanInput = scanner.nextLine();
-            if (scanInput.equalsIgnoreCase("end")) {
-                break;
+            String buff = "";
+            while (true) {
+                System.out.println("Write your expression \n");
+                scanInput = scanner.nextLine();
+                if (scanInput.equalsIgnoreCase("end")) {
+                    break;
+                }
+                buff += scanInput;
+                System.out.println(buff);
+                lexical.analyze(buff);
             }
-            buff += scanInput;
-            System.out.println(buff);
-            lexical.analyze(buff);
-        }
-        LEX.print(lexical.getsTable());
-        System.out.println("==============================================>");
-        LEX.printA(lexOut);
+            LEX.print(lexical.getsTable());
+            System.out.println("==============================================>");
+            LEX.printA(lexOut);
 
-        SyntaxAnalyzer sa = new SyntaxAnalyzer();
-        sa.Z();
+            SyntaxAnalyzer sa = new SyntaxAnalyzer();
+            sa.Z();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void error(String s) {
-        System.out.println("Error needed " + s);
+    public void error(String s) throws Exception {
+            throw new Exception ("Error needed" + s);
     }
 
     public Symbol getToken() {
@@ -48,35 +52,35 @@ public class SyntaxAnalyzer {
     public void Z() {
         start();
         if (!token.getName().equals("Start")) {
-            error("Start");
+            throw new RuntimeException("Error needed Start");
+
         }
         token = getToken();
         block();
-        token = getToken();
         if (!token.getName().equals("Finish")) {
-            error("Finish");
+                throw new RuntimeException("Error needed Finish");
         }
-        //token = getToken();
     }
 
     public void start() {
         if (!token.getName().equals("Structure")) {
-            error("Structure");
+            throw new RuntimeException("Error needed Structure");
+
         }
         token = getToken();
         if (token.getTypeCode() != 1) {
-            error("Ident");
+            throw new RuntimeException("Error needed Ident");
         }
         token = getToken();
         if (!token.getName().equals("=>")) {
-            error("=>");
+            throw new RuntimeException("Error needed =>");
         }
         token = getToken();
     }
 
     public void block() {
         stm();
-        while (token.equals(";")) {
+        while (token.getName().equals(";")) {
             token = getToken();
             stm();
         }
@@ -86,44 +90,52 @@ public class SyntaxAnalyzer {
         if (token.getTypeCode() == 1) {
             token = getToken();
             if (!token.getName().equals("$")) {
-                error("$");
-                token = getToken();
-                exp();
+                throw new RuntimeException("Error needed $");
             }
-        } else if (token.getName().equals("Si")) {
             token = getToken();
             exp();
+        } else if (token.getName().equals("Si")) {
+            token = getToken();
+            if (token.getName().equals("(")) {
+                throw new RuntimeException("Error needed (");
+            }
+            token = getToken();
+            check();
+            if (token.getName().equals(")")) {
+                throw new RuntimeException("Error needed )");
+            }
+            token = getToken();
+            stm();
 
             if (!token.getName().equals("Then")) {
-                error("Then");
-                token = getToken();
-                stm();
+                throw new RuntimeException("Error needed Then");
             }
             if (token.getName().equals("Aliud")) {
                 token = getToken();
                 stm();
             }
         }
-        if (token.getName().equals("While")) {
+        else if (token.getName().equals("While")) {
             token = getToken();
             if (!token.getName().equals("(")) {
-                error("(");
+                throw new RuntimeException("Error needed (");
             }
             token = getToken();
             check();
             if (!token.getName().equals(")")) {
-                error(")");
+                throw new RuntimeException("Error needed )");
             }
             token = getToken();
+           // stm();
+
             if (!token.getName().equals("{")) {
-                error("{");
+                throw new RuntimeException("Error needed {");
             }
             token = getToken();
             stm();
-            token = getToken();
 
-            if (!token.getName().equals(")")) {
-                error(")");
+            if (!token.getName().equals("}")) {
+                throw new RuntimeException("Error needed }");
             }
 
         } else if (token.getName().equals("print")) {
@@ -131,16 +143,14 @@ public class SyntaxAnalyzer {
             out();
         } else if (token.getName().equals("scan")) {
             token = getToken();
-            if (!token.getName().equals("Ident")) {
-                error("Ident");
+            if (token.getTypeCode() != 1) {
+                throw new RuntimeException("Error needed Ident");
             }
-            //token = getToken();
+            token = getToken();
         } else {
-            error("##");
+            throw new RuntimeException("Error needed other");
         }
-
     }
-
 
     public void exp() {
         term();
@@ -167,18 +177,18 @@ public class SyntaxAnalyzer {
             token = getToken();
             exp();
             if (!token.getName().equals(")")) {
-                error(")");
+                throw new RuntimeException("Error needed )");
             }
             token = getToken();
         } else {
-            error("error");
+            throw new RuntimeException("Error needed other");
         }
     }
 
     public void check() {
         exp();
         if (!token.getName().equals("==")) {
-            error("==");
+            throw new RuntimeException("Error needed ==");
         }
         token = getToken();
         exp();
