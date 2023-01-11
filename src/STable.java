@@ -1,5 +1,3 @@
-//Byte option
-
 import java.nio.charset.StandardCharsets;
 
 public class STable {

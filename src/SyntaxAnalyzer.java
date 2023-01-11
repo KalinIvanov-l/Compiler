@@ -65,12 +65,13 @@ public class SyntaxAnalyzer {
     public void start() {
         if (!token.getName().equals("Structure")) {
             throw new RuntimeException("Error needed Structure");
-
         }
+
         token = getToken();
         if (token.getTypeCode() != 1) {
             throw new RuntimeException("Error needed Ident");
         }
+
         token = getToken();
         if (!token.getName().equals("=>")) {
             throw new RuntimeException("Error needed =>");
@@ -126,7 +127,6 @@ public class SyntaxAnalyzer {
                 throw new RuntimeException("Error needed )");
             }
             token = getToken();
-           // stm();
 
             if (!token.getName().equals("{")) {
                 throw new RuntimeException("Error needed {");

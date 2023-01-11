@@ -7,7 +7,6 @@ public class LEX {
     private static String scanInput = "";
     private static Symbol[] sTable = new Symbol[100];
     public static int i = 0;
-    //    private int[] tol = new int[300];
     int global = 0;
     private static int[] storage = new int[200];
 
@@ -27,7 +26,7 @@ public class LEX {
             }
             if (isLetter(c)) {
                 buff = "";
-                while (isLetterOrDigit(c)) { // има ли вариант условието за край да е тук?
+                while (isLetterOrDigit(c)) {
                     buff += c;
                     c = getNext(input);
                 }
@@ -106,8 +105,10 @@ public class LEX {
     }
 
     public String initialize() {
+        //there are have words in latin
         String[] keyword = {"Start", "stttop", "Structure", "=>", ";", "Si", "Then", "Aliud", "While", "print", "scan",
-                "Finish", "err"}; //има думи на латински
+                "Finish", "err"};
+
         for (String x : keyword) {
             System.out.println(STable.hashCode(x));
             int var = STable.hashCode(x);
