@@ -50,9 +50,11 @@ public class LEX {
                 buff = "";
                 buff += c;
                 c = getNext(input);
+
                 if (isOperator(c)) {
                     buff += c;
                 }
+
                 int token = STable.addToArray(buff, sTable, 3);
                 storage[global] = token;
                 global++;

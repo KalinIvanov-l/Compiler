@@ -5,6 +5,7 @@ public class STable {
     public static int hashCode(String symbol) {
         byte[] symbolArray = symbol.getBytes(StandardCharsets.UTF_8); //dividing String to array of byte with UTF value of the symbol
         int sum = 0;
+
         for (int i : symbolArray) {
             sum += i + 10;
         }

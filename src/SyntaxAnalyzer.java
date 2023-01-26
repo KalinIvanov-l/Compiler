@@ -16,6 +16,7 @@ public class SyntaxAnalyzer {
             while (true) {
                 System.out.println("Write your expression \n");
                 scanInput = scanner.nextLine();
+                //write 'end' when finish expression
                 if (scanInput.equalsIgnoreCase("end")) {
                     break;
                 }
@@ -35,7 +36,7 @@ public class SyntaxAnalyzer {
     }
 
     public void error(String s) throws Exception {
-            throw new Exception ("Error needed" + s);
+        throw new Exception("Error needed" + s);
     }
 
     public Symbol getToken() {
@@ -58,7 +59,7 @@ public class SyntaxAnalyzer {
         token = getToken();
         block();
         if (!token.getName().equals("Finish")) {
-                throw new RuntimeException("Error needed Finish");
+            throw new RuntimeException("Error needed Finish");
         }
     }
 
@@ -115,8 +116,7 @@ public class SyntaxAnalyzer {
                 token = getToken();
                 stm();
             }
-        }
-        else if (token.getName().equals("While")) {
+        } else if (token.getName().equals("While")) {
             token = getToken();
             if (!token.getName().equals("(")) {
                 throw new RuntimeException("Error needed (");
