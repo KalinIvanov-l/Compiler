@@ -57,8 +57,8 @@ public class SyntaxAnalyzer {
         start();
         if (!token.getName().equals("Start")) {
             throw new RuntimeException("Error needed Start");
-
         }
+
         token = getToken();
         block();
         if (!token.getName().equals("Finish")) {
@@ -80,6 +80,7 @@ public class SyntaxAnalyzer {
         if (!token.getName().equals("=>")) {
             throw new RuntimeException("Error needed =>");
         }
+
         token = getToken();
     }
 
@@ -97,6 +98,7 @@ public class SyntaxAnalyzer {
             if (!token.getName().equals("$")) {
                 throw new RuntimeException("Error needed $");
             }
+
             token = getToken();
             exp();
         } else if (token.getName().equals("Si")) {
@@ -104,39 +106,44 @@ public class SyntaxAnalyzer {
             if (token.getName().equals("(")) {
                 throw new RuntimeException("Error needed (");
             }
+
             token = getToken();
             check();
             if (token.getName().equals(")")) {
                 throw new RuntimeException("Error needed )");
             }
+
             token = getToken();
             stm();
 
             if (!token.getName().equals("Then")) {
                 throw new RuntimeException("Error needed Then");
             }
+
             if (token.getName().equals("Aliud")) {
                 token = getToken();
                 stm();
             }
+
         } else if (token.getName().equals("While")) {
             token = getToken();
             if (!token.getName().equals("(")) {
                 throw new RuntimeException("Error needed (");
             }
+
             token = getToken();
             check();
             if (!token.getName().equals(")")) {
                 throw new RuntimeException("Error needed )");
             }
-            token = getToken();
 
+            token = getToken();
             if (!token.getName().equals("{")) {
                 throw new RuntimeException("Error needed {");
             }
+
             token = getToken();
             stm();
-
             if (!token.getName().equals("}")) {
                 throw new RuntimeException("Error needed }");
             }
@@ -193,6 +200,7 @@ public class SyntaxAnalyzer {
         if (!token.getName().equals("==")) {
             throw new RuntimeException("Error needed ==");
         }
+
         token = getToken();
         exp();
     }
