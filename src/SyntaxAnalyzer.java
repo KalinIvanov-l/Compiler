@@ -115,7 +115,6 @@ public class SyntaxAnalyzer {
 
             token = getToken();
             stm();
-
             if (!token.getName().equals("Then")) {
                 throw new RuntimeException("Error needed Then");
             }
