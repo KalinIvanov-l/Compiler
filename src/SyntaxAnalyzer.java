@@ -20,16 +20,19 @@ public class SyntaxAnalyzer {
                 if (scanInput.equalsIgnoreCase("end")) {
                     break;
                 }
+
                 buff += scanInput;
                 System.out.println(buff);
                 lexical.analyze(buff);
             }
+
             LEX.print(lexical.getsTable());
             System.out.println("==============================================>");
             LEX.printA(lexOut);
 
             SyntaxAnalyzer sa = new SyntaxAnalyzer();
             sa.Z();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
