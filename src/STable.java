@@ -1,6 +1,7 @@
 import java.nio.charset.StandardCharsets;
 
 public class STable {
+    private STable () {}
 
     public static int hashCode(String symbol) {
         byte[] symbolArray = symbol.getBytes(StandardCharsets.UTF_8); //dividing String to array of byte with UTF value of the symbol
