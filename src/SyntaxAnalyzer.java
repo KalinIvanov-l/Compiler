@@ -2,12 +2,13 @@ import java.util.Scanner;
 
 public class SyntaxAnalyzer {
     static int[] lexOut = LEX.getStorage();
-    private static Scanner scanner = new Scanner(System.in);
-    private static String scanInput = "";
+    private static final Scanner scanner = new Scanner(System.in);
+
     private int globalLexOut = 0;
     Symbol token = getToken();
 
     public static void main(String[] args) {
+        String scanInput;
         try {
             LEX lexical = new LEX();
             lexical.initialize();

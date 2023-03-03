@@ -1,6 +1,6 @@
 public class Symbol {
-    private String name;
-    private int typeCode;
+    private final String name;
+    private final int typeCode;
 
     public Symbol(String name, int typeCode) {
         this.name = name;

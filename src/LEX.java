@@ -1,11 +1,7 @@
-import java.util.Scanner;
-
 import static java.lang.Character.*;
 
 public class LEX {
-    private static Scanner scanner = new Scanner(System.in);
-    private static String scanInput = "";
-    private static Symbol[] sTable = new Symbol[100];
+    private static Symbol[]sTable = new Symbol[100];
     public static int i = 0;
     int global = 0;
     private static int[] storage = new int[200];
