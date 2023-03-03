@@ -114,6 +114,5 @@ public class LEX {
             Symbol sm = new Symbol(x, 4);
             sTable[var] = sm;
         }
-
     }
 }
