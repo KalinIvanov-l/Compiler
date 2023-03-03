@@ -1,19 +1,19 @@
 import static java.lang.Character.*;
 
 public class LEX {
-    private static Symbol[]sTable = new Symbol[100];
+    private static final Symbol[]sTable = new Symbol[100];
     public static int i = 0;
     int global = 0;
-    private static int[] storage = new int[200];
+    private static final int[] storage = new int[200];
 
     public static void main(String[] args) {
         LEX l = new LEX();
         l.initialize();
-        print(l.sTable);
+        print(sTable);
     }
 
     void analyze(String input) {
-        String buff;
+        StringBuilder buff;
 
         while (i < input.length()) {
             char c = getNext(input);
@@ -21,37 +21,37 @@ public class LEX {
                 c = getNext(input);
             }
             if (isLetter(c)) {
-                buff = "";
+                buff = new StringBuilder();
                 while (isLetterOrDigit(c)) {
-                    buff += c;
+                    buff.append(c);
                     c = getNext(input);
                 }
-                int token = STable.addToArray(buff, sTable, 1);
+                int token = STable.addToArray(buff.toString(), sTable, 1);
 
                 storage[global] = token;
                 global++;
 
             } else if (isDigit(c)) {
-                buff = "";
+                buff = new StringBuilder();
                 while (isDigit(c)) {
-                    buff += c;
+                    buff.append(c);
                     c = getNext(input);
                 }
-                int token = STable.addToArray(buff, sTable, 2);
+                int token = STable.addToArray(buff.toString(), sTable, 2);
 
                 storage[global] = token;
                 global++;
 
             } else if (isOperator(c)) {
-                buff = "";
-                buff += c;
+                buff = new StringBuilder();
+                buff.append(c);
                 c = getNext(input);
 
                 if (isOperator(c)) {
-                    buff += c;
+                    buff.append(c);
                 }
 
-                int token = STable.addToArray(buff, sTable, 3);
+                int token = STable.addToArray(buff.toString(), sTable, 3);
                 storage[global] = token;
                 global++;
 
@@ -87,9 +87,9 @@ public class LEX {
     }
 
     public static void printA(int[] storage) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != 0) {
-                System.out.println(storage[i]);
+        for (int j : storage) {
+            if (j != 0) {
+                System.out.println(j);
             }
         }
     }
@@ -102,7 +102,7 @@ public class LEX {
         return storage;
     }
 
-    public String initialize() {
+    public void initialize() {
         //there are have words in latin
         String[] keyword = {"Start", "stttop", "Structure", "=>", ";", "Si", "Then", "Aliud", "While", "print", "scan",
                 "Finish", "err"};
@@ -112,9 +112,8 @@ public class LEX {
             int var = STable.hashCode(x);
 
             Symbol sm = new Symbol(x, 4);
-            this.sTable[var] = sm;
+            sTable[var] = sm;
         }
 
-        return "";
     }
 }
