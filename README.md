@@ -1,11 +1,10 @@
 # Compiler Project
 
 ## Description
-### This is simple implementation of compiler. Project not have all functional properties which has one complete compiler. 
-- In Symbol Table I store all symbol in my language and return position of each symbol. 
-- Syntax Analyzer checks if what I have entered the console matches my language  
+### This is a simple implementation of the compiler. The project does not have all functional properties which have one complete compiler.
+- In the Symbol Table, I store all symbols in my language and return the position of each symbol.
+- Syntax Analyzer checks if what I have entered the console matches my language
 - Lexical Analyzer contains language keywords and operators
-
 ## Run
 ``` 
 Use Java 8 and above. 
