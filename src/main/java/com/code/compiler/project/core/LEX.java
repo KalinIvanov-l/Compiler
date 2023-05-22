@@ -1,5 +1,10 @@
+package com.code.compiler.project.core;
+
 import static java.lang.Character.*;
 
+/**
+ * @author kalin
+ */
 public class LEX {
     private static final Symbol[]sTable = new Symbol[100];
     public static int i = 0;
@@ -69,11 +74,11 @@ public class LEX {
     }
 
     public char getNext(String input) {
-        char c;
+        char nextChar;
         if (i < input.length()) {
-            c = input.charAt(i);
+            nextChar = input.charAt(i);
             i++;
-            return c;
+            return nextChar;
         }
         return ' ';
     }

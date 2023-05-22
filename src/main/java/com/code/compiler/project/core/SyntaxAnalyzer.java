@@ -1,3 +1,5 @@
+package com.code.compiler.project.core;
+
 import java.util.Scanner;
 
 public class SyntaxAnalyzer {

@@ -1,3 +1,5 @@
+package com.code.compiler.project.core;
+
 import java.nio.charset.StandardCharsets;
 
 public class STable {
