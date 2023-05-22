@@ -1,5 +1,8 @@
 package com.code.compiler.project.core;
 
+/**
+ * @author kalin
+ */
 public class Symbol {
     private final String name;
     private final int typeCode;
