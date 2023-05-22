@@ -5,7 +5,7 @@ package com.code.compiler.project.core;
  */
 public class SyntaxAnalyzer {
     private static final String ERROR_MESSAGE = "Error needed";
-    static int[] lexOut = LEX.getStorage();
+    public static int[] lexOut = LEX.getStorage();
 
     private int globalLexOut = 0;
     Symbol token = getToken();
@@ -21,7 +21,7 @@ public class SyntaxAnalyzer {
         return sm;
     }
 
-    protected void analyze() {
+    public void analyze() {
         start();
         if (!token.getName().equals("Start")) {
             throw new RuntimeException(ERROR_MESSAGE + " Start ");
@@ -174,7 +174,6 @@ public class SyntaxAnalyzer {
         if (!token.getName().equals("==")) {
             throw new RuntimeException(ERROR_MESSAGE + " == ");
         }
-
         token = getToken();
         expression();
     }

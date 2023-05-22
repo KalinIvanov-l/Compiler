@@ -1,4 +1,6 @@
-package com.code.compiler.project.core;
+package com.code.compiler.project.core.runner;
+
+import com.code.compiler.project.core.LEX;
 
 import static com.code.compiler.project.core.LEX.print;
 import static com.code.compiler.project.core.LEX.sTable;

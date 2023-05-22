@@ -6,12 +6,12 @@ import static java.lang.Character.*;
  * @author kalin
  */
 public class LEX {
-    static final Symbol[] sTable = new Symbol[100];
+    public static final Symbol[] sTable = new Symbol[100];
     private static int index = 0;
     public int global = 0;
     private static final int[] storage = new int[200];
 
-    protected void analyze(String input) {
+    public void analyze(String input) {
         StringBuilder buffer;
 
         while (index < input.length()) {
@@ -78,7 +78,7 @@ public class LEX {
         return ' ';
     }
 
-    protected static void print(Symbol[] array) {
+    public static void print(Symbol[] array) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
                 System.out.println(i + " - " + array[i].getName() + " type: " + array[i].getTypeCode());
@@ -86,7 +86,7 @@ public class LEX {
         }
     }
 
-    protected static void printA(int[] storage) {
+    public static void printA(int[] storage) {
         for (int tokenCode : storage) {
             if (tokenCode != 0) {
                 System.out.println(tokenCode);
@@ -94,7 +94,7 @@ public class LEX {
         }
     }
 
-    protected static Symbol[] getsTable() {
+    public static Symbol[] getsTable() {
         return sTable;
     }
 
@@ -102,7 +102,7 @@ public class LEX {
         return storage;
     }
 
-    protected void initialize() {
+    public void initialize() {
         //there are have words in latin
         String[] keyword = {"Start", "stttop", "Structure", "=>", ";", "Si", "Then", "Aliud", "While", "print", "scan",
                 "Finish", "err"};

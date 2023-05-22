@@ -1,4 +1,7 @@
-package com.code.compiler.project.core;
+package com.code.compiler.project.core.runner;
+
+import com.code.compiler.project.core.LEX;
+import com.code.compiler.project.core.SyntaxAnalyzer;
 
 import java.util.Scanner;
 
