@@ -6,84 +6,79 @@ import static java.lang.Character.*;
  * @author kalin
  */
 public class LEX {
-    private static final Symbol[]sTable = new Symbol[100];
-    public static int i = 0;
-    int global = 0;
+    static final Symbol[] sTable = new Symbol[100];
+    private static int index = 0;
+    public int global = 0;
     private static final int[] storage = new int[200];
 
-    public static void main(String[] args) {
-        LEX l = new LEX();
-        l.initialize();
-        print(sTable);
-    }
+    protected void analyze(String input) {
+        StringBuilder buffer;
 
-    void analyze(String input) {
-        StringBuilder buff;
-
-        while (i < input.length()) {
+        while (index < input.length()) {
             char c = getNext(input);
             while (c == ' ') {
                 c = getNext(input);
             }
             if (isLetter(c)) {
-                buff = new StringBuilder();
+                buffer = new StringBuilder();
                 while (isLetterOrDigit(c)) {
-                    buff.append(c);
+                    buffer.append(c);
                     c = getNext(input);
                 }
-                int token = STable.addToArray(buff.toString(), sTable, 1);
+                int token = STable.addToArray(buffer.toString(), sTable, 1);
 
                 storage[global] = token;
                 global++;
 
             } else if (isDigit(c)) {
-                buff = new StringBuilder();
+                buffer = new StringBuilder();
                 while (isDigit(c)) {
-                    buff.append(c);
+                    buffer.append(c);
                     c = getNext(input);
                 }
-                int token = STable.addToArray(buff.toString(), sTable, 2);
+                int token = STable.addToArray(buffer.toString(), sTable, 2);
 
                 storage[global] = token;
                 global++;
 
             } else if (isOperator(c)) {
-                buff = new StringBuilder();
-                buff.append(c);
+                buffer = new StringBuilder();
+                buffer.append(c);
                 c = getNext(input);
 
                 if (isOperator(c)) {
-                    buff.append(c);
+                    buffer.append(c);
                 }
 
-                int token = STable.addToArray(buff.toString(), sTable, 3);
+                int token = STable.addToArray(buffer.toString(), sTable, 3);
                 storage[global] = token;
                 global++;
 
             } else {
-                System.out.println("Error at " + i);
+                System.out.println("Error at " + index);
                 break;
             }
         }
     }
 
-    private boolean isOperator(char c) {
-        return (c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^' || c == '.'
-                || c == '=' || c == '<' || c == '>' || c == '$' || c == '(' || c == ')'
-                || c == ';' || c == '{' || c == '}');
+    private boolean isOperator(char allowedOperator) {
+        return (allowedOperator == '+' || allowedOperator == '-' || allowedOperator == '*' || allowedOperator == '/' ||
+                allowedOperator == '%' || allowedOperator == '^' || allowedOperator == '.' || allowedOperator == '=' ||
+                allowedOperator == '<' || allowedOperator == '>' || allowedOperator == '$' || allowedOperator == '(' ||
+                allowedOperator == ')' || allowedOperator == ';' || allowedOperator == '{' || allowedOperator == '}');
     }
 
-    public char getNext(String input) {
+    private char getNext(String input) {
         char nextChar;
-        if (i < input.length()) {
-            nextChar = input.charAt(i);
-            i++;
+        if (index < input.length()) {
+            nextChar = input.charAt(index);
+            index++;
             return nextChar;
         }
         return ' ';
     }
 
-    public static void print(Symbol[] array) {
+    protected static void print(Symbol[] array) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
                 System.out.println(i + " - " + array[i].getName() + " type: " + array[i].getTypeCode());
@@ -91,23 +86,23 @@ public class LEX {
         }
     }
 
-    public static void printA(int[] storage) {
-        for (int j : storage) {
-            if (j != 0) {
-                System.out.println(j);
+    protected static void printA(int[] storage) {
+        for (int tokenCode : storage) {
+            if (tokenCode != 0) {
+                System.out.println(tokenCode);
             }
         }
     }
 
-    public static Symbol[] getsTable() {
+    protected static Symbol[] getsTable() {
         return sTable;
     }
 
-    public static int[] getStorage() {
+    protected static int[] getStorage() {
         return storage;
     }
 
-    public void initialize() {
+    protected void initialize() {
         //there are have words in latin
         String[] keyword = {"Start", "stttop", "Structure", "=>", ";", "Si", "Then", "Aliud", "While", "print", "scan",
                 "Finish", "err"};

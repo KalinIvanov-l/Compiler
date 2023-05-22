@@ -1,48 +1,16 @@
 package com.code.compiler.project.core;
 
-import java.util.Scanner;
-
+/**
+ * @author kalin
+ */
 public class SyntaxAnalyzer {
-    private static final String ERROR_NEEDED = "Error needed";
+    private static final String ERROR_MESSAGE = "Error needed";
     static int[] lexOut = LEX.getStorage();
-    private static final Scanner scanner = new Scanner(System.in);
 
     private int globalLexOut = 0;
     Symbol token = getToken();
 
-    public static void main(String[] args) {
-        String scanInput;
-        try {
-            LEX lexical = new LEX();
-            lexical.initialize();
-
-            String buff = "";
-            while (true) {
-                System.out.println("Write your expression \n");
-                scanInput = scanner.nextLine();
-                //write 'end' when finish expression
-                if (scanInput.equalsIgnoreCase("end")) {
-                    break;
-                }
-
-                buff += scanInput;
-                System.out.println(buff);
-                lexical.analyze(buff);
-            }
-
-            LEX.print(LEX.getsTable());
-            System.out.println("==============================================>");
-            LEX.printA(lexOut);
-
-            SyntaxAnalyzer sa = new SyntaxAnalyzer();
-            sa.Z();
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public Symbol getToken() {
+    private Symbol getToken() {
         Symbol sm = null;
         if (globalLexOut < lexOut.length) {
             int ss = lexOut[globalLexOut];
@@ -53,98 +21,104 @@ public class SyntaxAnalyzer {
         return sm;
     }
 
-    public void Z() {
+    protected void analyze() {
         start();
         if (!token.getName().equals("Start")) {
-            throw new RuntimeException(ERROR_NEEDED + " Start ");
+            throw new RuntimeException(ERROR_MESSAGE + " Start ");
         }
 
         token = getToken();
         block();
         if (!token.getName().equals("Finish")) {
-            throw new RuntimeException(ERROR_NEEDED + " Finish ");
+            throw new RuntimeException(ERROR_MESSAGE + " Finish ");
         }
     }
 
-    public void start() {
+    private void start() {
         if (!token.getName().equals("Structure")) {
-            throw new RuntimeException(ERROR_NEEDED + " Structure ");
+            throw new RuntimeException(ERROR_MESSAGE + " Structure ");
         }
 
         token = getToken();
+        match();
         if (token.getTypeCode() != 1) {
-            throw new RuntimeException(ERROR_NEEDED + " Ident ");
+            throw new RuntimeException(ERROR_MESSAGE + " Ident ");
         }
 
         token = getToken();
+        match();
         if (!token.getName().equals("=>")) {
-            throw new RuntimeException(ERROR_NEEDED + " => ");
+            throw new RuntimeException(ERROR_MESSAGE + " => ");
         }
 
         token = getToken();
     }
 
-    public void block() {
-        stm();
+    private void block() {
+        statement();
         while (token.getName().equals(";")) {
             token = getToken();
-            stm();
+            statement();
         }
     }
 
-    public void stm() {
+    private void statement() {
         if (token.getTypeCode() == 1) {
             token = getToken();
+            match();
             if (!token.getName().equals("$")) {
-                throw new RuntimeException(ERROR_NEEDED + " $ ");
+                throw new RuntimeException(ERROR_MESSAGE + " $ ");
             }
 
             token = getToken();
-            exp();
+            expression();
         } else if (token.getName().equals("Si")) {
             token = getToken();
+            match();
             if (token.getName().equals("(")) {
-                throw new RuntimeException(ERROR_NEEDED + " ) ");
+                throw new RuntimeException(ERROR_MESSAGE + " ( ");
             }
 
             token = getToken();
-            check();
+            match();
             if (token.getName().equals(")")) {
-                throw new RuntimeException(ERROR_NEEDED + " ) ");
+                throw new RuntimeException(ERROR_MESSAGE + " ) ");
             }
 
             token = getToken();
-            stm();
+            statement();
             if (!token.getName().equals("Then")) {
-                throw new RuntimeException(ERROR_NEEDED + " Then ");
+                throw new RuntimeException(ERROR_MESSAGE + " Then ");
             }
 
             if (token.getName().equals("Aliud")) {
                 token = getToken();
-                stm();
+                statement();
             }
 
         } else if (token.getName().equals("While")) {
             token = getToken();
+            match();
             if (!token.getName().equals("(")) {
-                throw new RuntimeException(ERROR_NEEDED + " ( ");
+                throw new RuntimeException(ERROR_MESSAGE + " ( ");
             }
 
             token = getToken();
-            check();
+            match();
             if (!token.getName().equals(")")) {
-                throw new RuntimeException(ERROR_NEEDED + ")");
+                throw new RuntimeException(ERROR_MESSAGE + ")");
             }
 
             token = getToken();
+            match();
             if (!token.getName().equals("{")) {
-                throw new RuntimeException(ERROR_NEEDED + "{");
+                throw new RuntimeException(ERROR_MESSAGE + "{");
             }
 
             token = getToken();
-            stm();
+            statement();
             if (!token.getName().equals("}")) {
-                throw new RuntimeException(ERROR_NEEDED + "}");
+                throw new RuntimeException(ERROR_MESSAGE + "}");
             }
 
         } else if (token.getName().equals("print")) {
@@ -152,16 +126,17 @@ public class SyntaxAnalyzer {
             out();
         } else if (token.getName().equals("scan")) {
             token = getToken();
+            match();
             if (token.getTypeCode() != 1) {
-                throw new RuntimeException(ERROR_NEEDED + "Ident");
+                throw new RuntimeException(ERROR_MESSAGE + "Ident");
             }
             token = getToken();
         } else {
-            throw new RuntimeException(ERROR_NEEDED + "other");
+            throw new RuntimeException(ERROR_MESSAGE + "other");
         }
     }
 
-    public void exp() {
+    private void expression() {
         term();
         while (token.getName().equals("+")) {
             token = getToken();
@@ -169,7 +144,7 @@ public class SyntaxAnalyzer {
         }
     }
 
-    public void term() {
+    private void term() {
         factor();
         while (token.getName().equals("*")) {
             token = getToken();
@@ -177,38 +152,38 @@ public class SyntaxAnalyzer {
         }
     }
 
-    public void factor() {
+    private void factor() {
         if (token.getTypeCode() == 1) {
             token = getToken();
         } else if (token.getTypeCode() == 2) {
             token = getToken();
         } else if (token.getName().equals("(")) {
             token = getToken();
-            exp();
+            expression();
             if (!token.getName().equals(")")) {
-                throw new RuntimeException(ERROR_NEEDED + " ) ");
+                throw new RuntimeException(ERROR_MESSAGE + " ) ");
             }
             token = getToken();
         } else {
-            throw new RuntimeException(ERROR_NEEDED + " other ");
+            throw new RuntimeException(ERROR_MESSAGE + " other ");
         }
     }
 
-    public void check() {
-        exp();
+    private void match() {
+        expression();
         if (!token.getName().equals("==")) {
-            throw new RuntimeException(ERROR_NEEDED + " == ");
+            throw new RuntimeException(ERROR_MESSAGE + " == ");
         }
 
         token = getToken();
-        exp();
+        expression();
     }
 
-    public void out() {
-        exp();
+    private void out() {
+        expression();
         while (token.getName().equals(",")) {
             token = getToken();
-            exp();
+            expression();
         }
     }
 }
