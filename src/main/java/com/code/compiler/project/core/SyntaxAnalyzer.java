@@ -5,50 +5,35 @@ package com.code.compiler.project.core;
  */
 public class SyntaxAnalyzer {
     private static final String ERROR_MESSAGE = "Error needed";
+    private static final String ERROR = "Other";
     public static int[] lexOut = LEX.getStorage();
 
     private int globalLexOut = 0;
     Symbol token = getToken();
 
     private Symbol getToken() {
-        Symbol sm = null;
+        Symbol symbol = null;
         if (globalLexOut < lexOut.length) {
             int ss = lexOut[globalLexOut];
-            sm = LEX.getsTable()[ss];
+            symbol = LEX.getsTable()[ss];
             globalLexOut++;
         }
 
-        return sm;
+        return symbol;
     }
 
     public void analyze() {
         start();
-        if (!token.getName().equals("Start")) {
-            throw new RuntimeException(ERROR_MESSAGE + " Start ");
-        }
-
+        checkTokenName("Start");
         token = getToken();
         block();
-        if (!token.getName().equals("Finish")) {
-            throw new RuntimeException(ERROR_MESSAGE + " Finish ");
-        }
+        checkTokenName("Finish");
     }
 
     private void start() {
-        if (!token.getName().equals("Structure")) {
-            throw new RuntimeException(ERROR_MESSAGE + " Structure ");
-        }
-
-        token = getToken();
-        if (token != null && token.getTypeCode() != 1) {
-            throw new RuntimeException(ERROR_MESSAGE + " Ident ");
-        }
-
-        token = getToken();
-        if (token != null && !token.getName().equals("=>")) {
-            throw new RuntimeException(ERROR_MESSAGE + " => ");
-        }
-
+        checkTokenName("Structure");
+        checkTokenType();
+        checkTokenName("=>");
         token = getToken();
     }
 
@@ -61,71 +46,76 @@ public class SyntaxAnalyzer {
     }
 
     private void statement() {
-        if (token.getTypeCode() == 1) {
-            token = getToken();
-            if (token != null && !token.getName().equals("$")) {
-                throw new RuntimeException(ERROR_MESSAGE + " $ ");
-            }
-
-            token = getToken();
-            expression();
-        } else if (token.getName().equals("Si")) {
-            token = getToken();
-            if (token != null && !token.getName().equals("(")) {
-                throw new RuntimeException(ERROR_MESSAGE + " ( ");
-            }
-
-            token = getToken();
-            if (token != null && !token.getName().equals(")")) {
-                throw new RuntimeException(ERROR_MESSAGE + " ) ");
-            }
-
-            token = getToken();
-            statement();
-            if (!token.getName().equals("Then")) {
-                throw new RuntimeException(ERROR_MESSAGE + " Then ");
-            }
-
-            if (token.getName().equals("Aliud")) {
-                token = getToken();
-                statement();
-            }
-
-        } else if (token.getName().equals("While")) {
-            token = getToken();
-            if (token != null && !token.getName().equals("(")) {
-                throw new RuntimeException(ERROR_MESSAGE + " ( ");
-            }
-
-            token = getToken();
-            if (token != null && !token.getName().equals(")")) {
-                throw new RuntimeException(ERROR_MESSAGE + ")");
-            }
-
-            token = getToken();
-            if (token != null && !token.getName().equals("{")) {
-                throw new RuntimeException(ERROR_MESSAGE + "{");
-            }
-
-            token = getToken();
-            statement();
-            if (!token.getName().equals("}")) {
-                throw new RuntimeException(ERROR_MESSAGE + "}");
-            }
-
-        } else if (token.getName().equals("print")) {
-            token = getToken();
-            out();
-        } else if (token.getName().equals("scan")) {
-            token = getToken();
-            match();
-            if (token.getTypeCode() != 1) {
-                throw new RuntimeException(ERROR_MESSAGE + "Ident");
-            }
-            token = getToken();
-        } else {
-            throw new RuntimeException(ERROR_MESSAGE + "other");
+        switch (token.getName()) {
+            case "=>":
+            case "+":
+            case "*":
+                throw new RuntimeException(ERROR_MESSAGE + ERROR);
+            default:
+                parseStatement();
+                break;
         }
+    }
+
+    private void parseStatement() {
+        if (token.getTypeCode() == 1) {
+            assignmentStatement();
+        } else if (token.getName().equals("Si")) {
+            ifStatement();
+        } else if (token.getName().equals("While")) {
+            whileStatement();
+        } else if (token.getName().equals("print")) {
+            printStatement();
+        } else if (token.getName().equals("scan")) {
+            scanStatement();
+        } else {
+            throw new RuntimeException(ERROR_MESSAGE + ERROR);
+        }
+    }
+
+    private void assignmentStatement() {
+        token = getToken();
+        checkTokenName("$");
+        token = getToken();
+        expression();
+    }
+
+    private void ifStatement() {
+        token = getToken();
+        checkTokenName("(");
+        token = getToken();
+        checkTokenName(")");
+        token = getToken();
+        statement();
+        checkTokenName("Then");
+        if (token.getName().equals("Aliud")) {
+            token = getToken();
+            statement();
+        }
+    }
+
+    private void whileStatement() {
+        token = getToken();
+        checkTokenName("(");
+        token = getToken();
+        checkTokenName(")");
+        token = getToken();
+        checkTokenName("{");
+        token = getToken();
+        statement();
+        checkTokenName("}");
+    }
+
+    private void printStatement() {
+        token = getToken();
+        out();
+    }
+
+    private void scanStatement() {
+        token = getToken();
+        match();
+        checkTokenType();
+        token = getToken();
     }
 
     private void expression() {
@@ -145,27 +135,21 @@ public class SyntaxAnalyzer {
     }
 
     private void factor() {
-        if (token.getTypeCode() == 1) {
-            token = getToken();
-        } else if (token.getTypeCode() == 2) {
+        if (token.getTypeCode() == 1 || token.getTypeCode() == 2) {
             token = getToken();
         } else if (token.getName().equals("(")) {
             token = getToken();
             expression();
-            if (!token.getName().equals(")")) {
-                throw new RuntimeException(ERROR_MESSAGE + " ) ");
-            }
+            checkTokenName(")");
             token = getToken();
         } else {
-            throw new RuntimeException(ERROR_MESSAGE + " other ");
+            throw new RuntimeException(ERROR_MESSAGE + ERROR);
         }
     }
 
     private void match() {
         expression();
-        if (!token.getName().equals("==")) {
-            throw new RuntimeException(ERROR_MESSAGE + " == ");
-        }
+        checkTokenName("==");
         token = getToken();
         expression();
     }
@@ -175,6 +159,19 @@ public class SyntaxAnalyzer {
         while (token.getName().equals(",")) {
             token = getToken();
             expression();
+        }
+    }
+
+    private void checkTokenType() {
+        if (token != null && token.getTypeCode() != 1) {
+            throw new RuntimeException(ERROR_MESSAGE + " Ident ");
+        }
+        token = getToken();
+    }
+
+    private void checkTokenName(String name) {
+        if (!token.getName().equals(name)) {
+            throw new RuntimeException(ERROR_MESSAGE + " " + name + " ");
         }
     }
 }
