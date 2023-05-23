@@ -40,14 +40,12 @@ public class SyntaxAnalyzer {
         }
 
         token = getToken();
-        match();
-        if (token.getTypeCode() != 1) {
+        if (token != null && token.getTypeCode() != 1) {
             throw new RuntimeException(ERROR_MESSAGE + " Ident ");
         }
 
         token = getToken();
-        match();
-        if (!token.getName().equals("=>")) {
+        if (token != null && !token.getName().equals("=>")) {
             throw new RuntimeException(ERROR_MESSAGE + " => ");
         }
 
@@ -65,8 +63,7 @@ public class SyntaxAnalyzer {
     private void statement() {
         if (token.getTypeCode() == 1) {
             token = getToken();
-            match();
-            if (!token.getName().equals("$")) {
+            if (token != null && !token.getName().equals("$")) {
                 throw new RuntimeException(ERROR_MESSAGE + " $ ");
             }
 
@@ -74,14 +71,12 @@ public class SyntaxAnalyzer {
             expression();
         } else if (token.getName().equals("Si")) {
             token = getToken();
-            match();
-            if (token.getName().equals("(")) {
+            if (token != null && !token.getName().equals("(")) {
                 throw new RuntimeException(ERROR_MESSAGE + " ( ");
             }
 
             token = getToken();
-            match();
-            if (token.getName().equals(")")) {
+            if (token != null && !token.getName().equals(")")) {
                 throw new RuntimeException(ERROR_MESSAGE + " ) ");
             }
 
@@ -98,20 +93,17 @@ public class SyntaxAnalyzer {
 
         } else if (token.getName().equals("While")) {
             token = getToken();
-            match();
-            if (!token.getName().equals("(")) {
+            if (token != null && !token.getName().equals("(")) {
                 throw new RuntimeException(ERROR_MESSAGE + " ( ");
             }
 
             token = getToken();
-            match();
-            if (!token.getName().equals(")")) {
+            if (token != null && !token.getName().equals(")")) {
                 throw new RuntimeException(ERROR_MESSAGE + ")");
             }
 
             token = getToken();
-            match();
-            if (!token.getName().equals("{")) {
+            if (token != null && !token.getName().equals("{")) {
                 throw new RuntimeException(ERROR_MESSAGE + "{");
             }
 
