@@ -15,39 +15,39 @@ public class LEX {
         StringBuilder buffer;
 
         while (index < input.length()) {
-            char c = getNext(input);
-            while (c == ' ') {
-                c = getNext(input);
+            char letters = getNext(input);
+            while (letters == ' ') {
+                letters = getNext(input);
             }
-            if (isLetter(c)) {
+            if (isLetter(letters)) {
                 buffer = new StringBuilder();
-                while (isLetterOrDigit(c)) {
-                    buffer.append(c);
-                    c = getNext(input);
+                while (isLetterOrDigit(letters)) {
+                    buffer.append(letters);
+                    letters = getNext(input);
                 }
                 int token = STable.addToArray(buffer.toString(), sTable, 1);
 
                 storage[global] = token;
                 global++;
 
-            } else if (isDigit(c)) {
+            } else if (isDigit(letters)) {
                 buffer = new StringBuilder();
-                while (isDigit(c)) {
-                    buffer.append(c);
-                    c = getNext(input);
+                while (isDigit(letters)) {
+                    buffer.append(letters);
+                    letters = getNext(input);
                 }
                 int token = STable.addToArray(buffer.toString(), sTable, 2);
 
                 storage[global] = token;
                 global++;
 
-            } else if (isOperator(c)) {
+            } else if (isOperator(letters)) {
                 buffer = new StringBuilder();
-                buffer.append(c);
-                c = getNext(input);
+                buffer.append(letters);
+                letters = getNext(input);
 
-                if (isOperator(c)) {
-                    buffer.append(c);
+                if (isOperator(letters)) {
+                    buffer.append(letters);
                 }
 
                 int token = STable.addToArray(buffer.toString(), sTable, 3);
