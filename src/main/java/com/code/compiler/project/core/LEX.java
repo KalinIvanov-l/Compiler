@@ -93,7 +93,7 @@ public class LEX {
     public static void printA(int[] storage) {
         for (int tokenCode : storage) {
             if (tokenCode != 0) {
-                LOGGER.info("{}" ,tokenCode);
+                LOGGER.info("{}", tokenCode);
             }
         }
     }
@@ -112,7 +112,7 @@ public class LEX {
                 "Finish", "err"};
 
         for (String x : keyword) {
-            LOGGER.info("{}" ,STable.hashCode(x));
+            LOGGER.info("{}", STable.hashCode(x));
             int var = STable.hashCode(x);
 
             Symbol sm = new Symbol(x, 4);
