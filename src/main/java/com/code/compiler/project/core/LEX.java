@@ -1,11 +1,15 @@
 package com.code.compiler.project.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static java.lang.Character.*;
 
 /**
  * @author kalin
  */
 public class LEX {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LEX.class);
     public static final Symbol[] sTable = new Symbol[100];
     private static int index = 0;
     public int global = 0;
@@ -55,7 +59,7 @@ public class LEX {
                 global++;
 
             } else {
-                System.out.println("Error at " + index);
+                LOGGER.error("{} Error at ", index);
                 break;
             }
         }
@@ -81,7 +85,7 @@ public class LEX {
     public static void print(Symbol[] array) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
-                System.out.println(i + " - " + array[i].getName() + " type: " + array[i].getTypeCode());
+                LOGGER.info(String.valueOf(i), " - ", array[i].getName(), " type: ", array[i].getTypeCode());
             }
         }
     }
@@ -89,7 +93,7 @@ public class LEX {
     public static void printA(int[] storage) {
         for (int tokenCode : storage) {
             if (tokenCode != 0) {
-                System.out.println(tokenCode);
+                LOGGER.info("{}" ,tokenCode);
             }
         }
     }
@@ -108,7 +112,7 @@ public class LEX {
                 "Finish", "err"};
 
         for (String x : keyword) {
-            System.out.println(STable.hashCode(x));
+            LOGGER.info("{}" ,STable.hashCode(x));
             int var = STable.hashCode(x);
 
             Symbol sm = new Symbol(x, 4);
